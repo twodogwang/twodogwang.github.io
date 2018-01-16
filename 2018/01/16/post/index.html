@@ -5,18 +5,20 @@
   
 
   
-  <title>夏娜酱的菠萝包</title>
+  <title>ThinkJs | 夏娜酱的菠萝包</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="F.E.D">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏娜酱的菠萝包">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="ThinkJS==ThinkJs基于koa2，基本框架搭好，其余只需在配置中配好即可。== 本质上和express框架、koa框架差不多。MVC框架：用户通过对应uri接口可以访问router，通过为对应uri定义的controller对请求进行操作，返回Json数据或者直接渲染模板引擎，如ejs、nunjucks等。基本结构如下1234567891011121314151617181920212">
+<meta name="keywords" content="ThinkJs,koa,后端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ThinkJs">
+<meta property="og:url" content="http://yoursite.com/2018/01/16/post/index.html">
 <meta property="og:site_name" content="夏娜酱的菠萝包">
-<meta property="og:description" content="F.E.D">
+<meta property="og:description" content="ThinkJS==ThinkJs基于koa2，基本框架搭好，其余只需在配置中配好即可。== 本质上和express框架、koa框架差不多。MVC框架：用户通过对应uri接口可以访问router，通过为对应uri定义的controller对请求进行操作，返回Json数据或者直接渲染模板引擎，如ejs、nunjucks等。基本结构如下1234567891011121314151617181920212">
 <meta property="og:locale" content="Chinese">
+<meta property="og:updated_time" content="2018-01-16T12:40:36.588Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏娜酱的菠萝包">
-<meta name="twitter:description" content="F.E.D">
+<meta name="twitter:title" content="ThinkJs">
+<meta name="twitter:description" content="ThinkJS==ThinkJs基于koa2，基本框架搭好，其余只需在配置中配好即可。== 本质上和express框架、koa框架差不多。MVC框架：用户通过对应uri接口可以访问router，通过为对应uri定义的controller对请求进行操作，返回Json数据或者直接渲染模板引擎，如ejs、nunjucks等。基本结构如下1234567891011121314151617181920212">
   
     <link rel="alternate" href="/atom.xml" title="夏娜酱的菠萝包" type="application/atom+xml">
   
@@ -67,9 +69,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-post" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-post" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/16/post/" class="article-date">
   <time datetime="2018-01-16T12:39:20.000Z" itemprop="datePublished">2018-01-16</time>
@@ -82,8 +82,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/16/post/">ThinkJs</a>
+    <h1 class="article-title" itemprop="name">
+      ThinkJs
     </h1>
   
 
@@ -115,98 +115,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="[post]-demo" class="article article-type-[post]" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/15/demo/" class="article-date">
-  <time datetime="2018-01-15T13:23:00.000Z" itemprop="datePublished">2018-01-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/15/demo/">vue-router和router-view标签的关系</a>
-    </h1>
+    <a href="/2018/01/15/demo/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">vue-router和router-view标签的关系</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- ## vue-router中children和router-view标签的关系 -->
-<h3 id="children层数对应router-view的层级关系"><a href="#children层数对应router-view的层级关系" class="headerlink" title="children层数对应router-view的层级关系"></a>children层数对应router-view的层级关系</h3><blockquote>
-<p><router-view> 组件是一个 functional 组件，渲染路径匹配到的视图组件。<code>&lt;router-view&gt;</code> 渲染的组件还可以内嵌自己的 <code>&lt;router-view&gt;</code>，根据嵌套路径，渲染嵌套组件。</router-view></p>
-</blockquote>
-<p>目前理解的是对应一个children层级的路由，如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import father from &apos;./father&apos;;</span><br><span class="line">import son from &apos;./son&apos;;</span><br><span class="line"></span><br><span class="line">router = &#123;</span><br><span class="line">    path: &apos;/father&apos;,</span><br><span class="line">    component: father,</span><br><span class="line">    children: [&#123;</span><br><span class="line">        path: &apos;son&apos;,</span><br><span class="line">        component: son</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果需要渲染出/father/son层级对应的组件，需要有同样嵌套层级的<router-view>，在第一层<router-view>中渲染father组件，在下一层<router-view>中渲染出son组件。所以需要嵌套的<router-view>标签来渲染出对应嵌套的route对象。</router-view></router-view></router-view></router-view></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/15/demo/" data-id="cjchmmxdi0001u8g041ivjulb" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/15/hello-world/" class="article-date">
-  <time datetime="2018-01-15T12:22:19.618Z" itemprop="datePublished">2018-01-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/15/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/15/hello-world/" data-id="cjchmmxed0003u8g02k2c26x4" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
