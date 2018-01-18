@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>post | 夏娜酱的菠萝包</title>
+  <meta name="author" content="cqyxy">
+  
+  <meta name="description" content="F.E.D">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="post"/>
+  <meta property="og:site_name" content="夏娜酱的菠萝包"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="夏娜酱的菠萝包" type="application/atom+xml">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-368771XX-X']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2018-01-18T13:57:17.000Z"><a href="/2018/01/18/post/">Thu, Jan 18 2018, 9:57:17 pm</a></time>
+
+  
+    <h1 class="title">post</h1>
+  
+
+
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="Vue的一些大问题"><a href="#Vue的一些大问题" class="headerlink" title="Vue的一些大问题"></a>Vue的一些大问题</h2><hr>
+<ol>
+<li>关于非脚手架（vue-cli）开发。非脚手架开发时，不会像webpack最终打包成一个HTML文件一样，会有许多页面许多模块进行拼装，在每个HTML文件中，和一般HTML页面一样，有DOCTYPE声明，style，script引入标签。每个页面应生成自己专属的Vue实例，因此在声明实例data配置时，不需要声明一个返回函数，完全可以声明一个对象，因为每个实例都是独立的，所以不会有对象形式声明的data中出现值共享的情况。</li>
+<li>同时，由于Vue实例独立的问题，Vuex不可用，一切都按照一般的页面进行布局和传递数据。如localstorage，sessionstorage，URLquery等方式。</li>
+<li>在Vue的实例上，有set方法。set方法。 这个方法主要用于添加一些属性时，能够拥有响应式的特性。个人理解为，由于Vue实现响应式的方法是定义的getter和setter，在Vue实例化时定义的值都会被写上getter和setter的方法，<a href="https://cn.vuejs.org/v2/guide/reactivity.html#ad" target="_blank" rel="noopener">类似于订阅式的通知方式</a>。直接在data中声明的对象上添加新的属性时，值可以传递，但是不会触发双向绑定的事件，对应的dom不会更新。<blockquote>
+<p>Vue.set( target, key, value )设置对象的属性。如果对象是响应式的，确保属性被创建后也是响应式的，同时触发视图更新。这个方法主要用于避开 Vue 不能检测属性被添加的限制。</p>
+</blockquote>
+</li>
+<li>Vue中的mixins。目前理解为和extend类似的属性，只是mixins的优先级要高于被拓展的原实例。例如在mixins中，定义了mounted钩子函数的话，会比被混合的原实例中定义的mounted钩子函数要先触发。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">var vm = new Vue(&#123;</span><br><span class="line">    mixins: [mixin_common],</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    mounted: function () &#123;</span><br><span class="line">      // this.loading(false);</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">      searchH: function (txt) &#123;</span><br><span class="line">        window.location.href = &apos;knowSearch.html&apos;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    data: &#123;</span><br><span class="line">      test_arr: [</span><br><span class="line">        &#123; id: 1, pic: &quot;images/a1.png&quot;, tit: &quot;血压，到底该量左手还是右手？出现这个问题要小心了&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 2, pic: &quot;images/a1.png&quot;, tit: &quot;这是另一个句子&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 3, pic: &quot;images/a2.png&quot;, tit: &quot;这是另一个句子&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 1, pic: &quot;images/a3.png&quot;, tit: &quot;这是另一个句子&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 1, pic: &quot;images/a2.png&quot;, tit: &quot;这是另一个句子&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 1, pic: &quot;images/a1.png&quot;, tit: &quot;血压，到底该量左手还是右手？出现这个问题要小心了&quot;, date: &quot;2017-12-12&quot; &#125;,</span><br><span class="line">        &#123; id: 1, pic: &quot;images/a1.png&quot;, tit: &quot;血压，到底该量左手还是右手？出现这个问题要小心了&quot;, date: &quot;2017-12-12&quot; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">var mixin_common = &#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    search_key: &quot;&quot;,</span><br><span class="line">    qs: &#123;&#125;   //专门用来接收页面传参</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted: function () &#123;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  /*watch:&#123;</span><br><span class="line">    loading:function(curVal,oldVal)&#123;&#125;</span><br><span class="line">  &#125;,*/</span><br><span class="line">  computed: &#123;</span><br><span class="line">    header_token: function () &#123;</span><br><span class="line">      return &#123; token: &quot;M3Bu8CXsuQhCvBH8JTkkjpCc81qUz4DK44bL3vhDsCungmuLrHseo2SNeDVNFBJzBq/1SbeEU0VVrq/CPVurCyMt5+YlQ735w/W/auBpyQSE9kkn24eySK7T2ZdoYZgX6PXALReS5l51QwzVf0eQnYvDJJBKxG91Wpz9cvbg3Rw=&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  methods: &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    toast: function (str, flag) &#123;</span><br><span class="line">      flag = flag ? flag : &quot;&quot;;</span><br><span class="line">      this.$dialog.toast(&#123;</span><br><span class="line">        mes: str,</span><br><span class="line">        icon: flag,</span><br><span class="line">        timeout: 2000</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    loading: function (flag) &#123;</span><br><span class="line">      if (flag) &#123;</span><br><span class="line">        document.querySelector(&quot;#loading&quot;).style.display = &quot;block&quot;;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        if (document.querySelector(&quot;#loading&quot;)) document.querySelector(&quot;#loading&quot;).style.display = &quot;none&quot;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2018/01/17/post/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2018/01/18/post/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2018 cqyxy
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="noopener">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="noopener">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+    
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"twodogwang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0] 
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+  
+  $(function(){
+
+    $('.title').hover(
+      function() {      
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );   
+      }, 
+      function() {       
+        $(this).stop().animate({'marginLeft': '0px'}, 200);      
+      
+    });   
+
+  });
+
+</script>
+
+
+</body>
+</html>
