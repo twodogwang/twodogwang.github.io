@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vue组件的问题（slot插槽和slot-scope传值） | 夏娜酱的菠萝包</title>
+  <meta name="author" content="cqyxy">
+  
+  <meta name="description" content="F.E.D">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Vue组件的问题（slot插槽和slot-scope传值）"/>
+  <meta property="og:site_name" content="夏娜酱的菠萝包"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="夏娜酱的菠萝包" type="application/atom+xml">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+<link rel="stylesheet" href="/css/style.css">
+  <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-368771XX-X']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <header id="header" class='normal_mode'>
+    <nav id="main-nav">
+  <ul class='container'>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+  </header>
+  <div id="content" class="container">
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2018-01-20T15:01:31.000Z"><a href="/2018/01/20/post/">Sat, Jan 20 2018, 11:01:31 pm</a></time>
+
+  
+    <h1 class="title">Vue组件的问题（slot插槽和slot-scope传值）</h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue、slot/">Vue、slot</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h3 id="关于Vue中的slot（插槽）"><a href="#关于Vue中的slot（插槽）" class="headerlink" title="关于Vue中的slot（插槽）"></a>关于Vue中的slot（插槽）</h3><hr>
+<ol>
+<li>之前不是很理解插槽的作用，因为理解中组件应该是抽象出来的一个概念。例如两个地方用着一样的列表组件，展示方式和样式一样，这样就可以抽象出一个组件，在用的时候只要在父模板中向子组件传递所需要的参数，例如一个数组，内容是所需要的标题，内容等所组成的一个个对象，这样传递给子组件，就可以渲染出所需要的效果。</li>
+</ol>
+<p>但是这个模式所构建的组件有个问题，就是内容定的很死。比如如果组件的结构是如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt; </span><br><span class="line">    &lt;transition name=&quot;t3&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;no_record&quot; v-show=&quot;!list.length&quot;&gt;没有符合条件的记录&lt;/div&gt;</span><br><span class="line">    &lt;/transition&gt;</span><br><span class="line">    &lt;yd-infinitescroll :callback=&quot;loadList&quot; ref=&quot;end&quot;&gt;</span><br><span class="line">        &lt;!--&lt;ul slot=&quot;list&quot;&gt;--&gt;</span><br><span class="line">            </span><br><span class="line">        &lt;!--	&lt;slot v-for=&quot;(item,index) in list&quot;--&gt;</span><br><span class="line">        &lt;!--	name=&quot;item&quot;--&gt;</span><br><span class="line">        &lt;!--	:item_data=&quot;item&quot;--&gt;</span><br><span class="line">        &lt;!--    :index_data=&quot;index&quot;&gt;--&gt;</span><br><span class="line">        &lt;!--	&lt;/slot&gt;--&gt;</span><br><span class="line">        &lt;!--&lt;/ul&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 数据全部加载完毕显示 --&gt;</span><br><span class="line">        &lt;!--&lt;span slot=&quot;doneTip&quot;&gt;终结于第&#123;&#123;page&#125;&#125;页&lt;/span&gt;--&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 加载中提示，不指定，将显示默认加载中图标 --&gt;</span><br><span class="line">        &lt;!--&lt;img slot=&quot;loadingTip&quot; src=&quot;images/loading10.svg&quot;/&gt;--&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/yd-infinitescroll&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样子的组件结构定死，如果有个只需要展示一个文字的列表或者图片的列表或者要在列表中添加链接等等情况，这样的组件就不能很灵活的满足要求。所以就有了slot的用武之地。如上代码中注释的部分，在用父组件时候，在子组件的template标签<child></child>中，添加内容<a>这是想渲染在页面的内容并且在子组件内</a>。在子组件中对应的需要slot插槽来提供给父组件中写的这个内容。此处也有一些name属性的区别。</p>
+<ol>
+<li><a href="https://cn.vuejs.org/v2/guide/components.html#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD" target="_blank" rel="noopener">关于slot-scope</a>这是一种特殊的插槽（slot），既然是插槽，个人理解就是子组件中的slot标签可以向父组件传递值。如下代码中，在不会渲染成HTML标签的template标签中添加slot属性指定子组件的slot插槽的name属性为item，并且添加了slot-scope属性指定了一个用来接收子组件中插槽传递值的一个变量名为props。这样，在指定了slot-scope属性的标签下，便可以使用这个子组件插槽传过来的值。代码中的<aa>标签是另一个组件，在其中也可以用插槽传过来的这个值。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;du_list_post url=&quot;/Knowledge/GetKnowLedgeMore&quot; :test=&quot;test_arr&quot; class=&quot;list_pic&quot; name=&quot;就医记录列表&quot; ref=&quot;list1&quot;&gt;</span><br><span class="line">        &lt;template slot=&quot;item&quot; slot-scope=&quot;props&quot;&gt;</span><br><span class="line">          &lt;li&gt;</span><br><span class="line">            &lt;aa href=&quot;know_detail.html&quot; :obj=&quot;&#123;InfoId:props.item_data.InfoId,TypeId:props.item_data.TypeId&#125;&quot;&gt;</span><br><span class="line">              &lt;div class=&quot;pic&quot; :style=&quot;&#123;backgroundImage: &apos;url(&apos; + props.item_data.pic + &apos;)&apos;&#125;&quot;&gt;&lt;/div&gt;</span><br><span class="line">              &lt;div class=&quot;cont&quot;&gt;</span><br><span class="line">                &lt;h2&gt;&#123;&#123; props.item_data.title &#125;&#125;&lt;/h2&gt;</span><br><span class="line">                &lt;h3&gt;&#123;&#123; props.item_data.date &#125;&#125;&lt;/h3&gt; </span><br><span class="line">              &lt;/div&gt;</span><br><span class="line">            &lt;/aa&gt;</span><br><span class="line">          &lt;/li&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">        &lt;/du_list_post&gt;</span><br></pre></td></tr></table></figure>
+</aa></li>
+</ol>
+<p>PS：昨天朋友来访，吃饭喝酒去了，没更新，罪过罪过。QAQ</p>
+
+      
+    </div>
+    <footer>
+      
+          
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <span class="jiathis_txt">分享到：</span>
+  <a class="jiathis_button_weixin">微信</a>
+  <a class="jiathis_button_tsina">新浪微博</a>
+  <a class="jiathis_button_renren">人人网</a>
+  <a class="jiathis_button_qzone">QQ空间</a>
+  <a class="jiathis_button_douban">豆瓣</a>
+  <a class="jiathis_button_pocket">Pocket</a>
+  <a href="http://www.jiathis.com/share?uid=901656" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js?uid=901656" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+          <div class="clearfix"></div>
+          <nav id="pagination">
+  
+  
+    <a href="/2018/01/18/post/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+  
+  <div class="clearfix"></div>
+</nav>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/2018/01/20/post/"></div>
+<!-- Duoshuo Comment END -->
+  
+</section>
+
+
+
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div>
+  
+  &copy; 2018 cqyxy
+  
+</div>
+Powered by <a href="http://zespia.tw/hexo/" title="Hexo" target="_blank" rel="noopener">Hexo</a> and <a href="http://pages.github.com/" title="GitHub Pages" target="_blank" rel="noopener">GitHub Pages</a>
+
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        (function(){
+
+            $(window).scroll(function(){
+
+                var scrollTop = $(window).scrollTop();
+                if ( scrollTop >200 ){
+                    $("#main-nav").removeClass('normal_mode').addClass('top_mode');
+                } else{
+                    $("#main-nav").removeClass('top_mode').addClass('normal_mode');
+                }
+
+            });
+
+        })();
+    </script>
+
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+  (function($){
+    $('.fancybox').fancybox({
+      'titlePosition': 'inside'
+    });
+  })(jQuery);
+  </script>
+
+
+
+    
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"twodogwang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = 'http://static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0] 
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+
+
+<script type="text/javascript">
+  
+  $(function(){
+
+    $('.title').hover(
+      function() {      
+        $(this).stop().animate(
+          {'marginLeft': '10px'}, 200
+        );   
+      }, 
+      function() {       
+        $(this).stop().animate({'marginLeft': '0px'}, 200);      
+      
+    });   
+
+  });
+
+</script>
+
+
+</body>
+</html>
