@@ -103,6 +103,78 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2018-01-22T13:41:10.000Z"><a href="/2018/01/22/post/">Mon, Jan 22 2018, 9:41:10 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/22/post/">关于.sync</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue-props-sync-父子组件/">Vue,props,.sync,父子组件</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p><a href="https://cn.vuejs.org/v2/guide/components.html#%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%E7%9A%84%E8%A1%A8%E5%8D%95%E8%BE%93%E5%85%A5%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">在一些情况下，我们可能会需要对一个 prop 进行“双向绑定”。事实上，这正是 Vue 1.x 中的 .sync 修饰符所提供的功能。当一个子组件改变了一个带 .sync 的 prop 的值时，这个变化也会同步到父组件中所绑定的值。这很方便，但也会导致问题，因为它破坏了单向数据流。由于子组件改变 prop 的代码和普通的状态改动代码毫无区别，当光看子组件的代码时，你完全不知道它何时悄悄地改变了父组件的状态。这在 debug 复杂结构的应用时会带来很高的维护成本。<br>上面所说的正是我们在 2.0 中移除 .sync 的理由。但是在 2.0 发布之后的实际应用中，我们发现 .sync 还是有其适用之处，比如在开发可复用的组件库时。我们需要做的只是让子组件改变父组件状态的代码更容易被区分。<br>从 2.3.0 起我们重新引入了 .sync 修饰符，但是这次它只是作为一个编译时的语法糖存在。它会被扩展为一个自动更新父组件属性的 v-on 监听器。</a></p>
+</blockquote>
+<p>今天在做一个需要传入组件中然后返回一个值的需求中，想通过传入props参数，在组件进行处理，返回一个值给父组件。当时想的不够全面，复杂化了问题。其实有两种方法。</p>
+<ol>
+<li>可以通过直接修改props属性传入的值达到目的。该方法有个好处，就是父组件中用的数组和在子组件中修改并展示的数组是同一个数组。也就是说，在子组件中对props属性进行修改，可以实时地体现在其他地方。其实本来项目中写的这种写法不应成立，现在个人理解之所以可以达到效果是因为JS中的堆栈数据的区别，也就是值类型和引用类型的区别。值类型（基本类型）的数据，一般包括(number,string,boolean,null,undefined)这些类型的值，它们的值是存在栈区（内存里的栈内存）的，在修改它们值的时候（简单的赋值操作），就是直接修改了它存在内存里的值。而引用类型在修改、赋值之类的操作时，由于它们的值存在栈区和堆区中，栈区中存放的是一个指针，它指向该变量存放在堆中的值。由于JS的特性，我们不能直接操作其在内存中的值，所以我们在赋值时其实是将它的指针赋给了其他变量。那么其他变量所对应的值不仅相同，而且是同一个值，也就是说我们修改其中一个值，另一个值也会被改变。所以在上例中时，在子组件中修改传入的值时，由于正好传入的是Array类型的值，引用变量，所以在子组件中修改它的值，对应到父组件中也变化了，本来应该单向绑定的props属性却变成了双向绑定（明天去公司修改一下验证我的猜想）。</li>
+<li>今天在修改组件时，也曾试着不直接修改props属性传入的值，而是拿到传入的值后“复制”一份值（此时也不可以直接赋值，可以用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[].concat(props传入的值)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>来进行拷贝）。然后在组件中不管是添加修改删除都是操作这个复制品，传入的值只作为初始化展示用。在正删改查时emit父组件对应的方法并将修改后的复制品的值传入进行提交即可。不过好像有点麻烦。</p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/22/post/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/22/post/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/22/post/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2018-01-20T15:01:31.000Z"><a href="/2018/01/20/post/">Sat, Jan 20 2018, 11:01:31 pm</a></time>
 
   
