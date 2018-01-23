@@ -103,6 +103,83 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2018-01-23T12:08:58.000Z"><a href="/2018/01/23/post/">Tue, Jan 23 2018, 8:08:58 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/23/post/">Vue-cli的一点小坑</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue-cli-url-webpack/">Vue-cli,url,webpack</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <p>使用Vue-cli脚手架可以方便的生成单页面的Vue项目。<code>vue init webpack 项目名</code> 即可生成一个基于脚手架的项目框架。<br> 项目结构大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">|-- build                            // 项目构建(webpack)相关代码</span><br><span class="line">|   |-- build.js                     // 生产环境构建代码</span><br><span class="line">|   |-- check-version.js             // 检查node、npm等版本</span><br><span class="line">|   |-- dev-client.js                // 热重载相关</span><br><span class="line">|   |-- dev-server.js                // 构建本地服务器</span><br><span class="line">|   |-- utils.js                     // 构建工具相关</span><br><span class="line">|   |-- webpack.base.conf.js         // webpack基础配置</span><br><span class="line">|   |-- webpack.dev.conf.js          // webpack开发环境配置</span><br><span class="line">|   |-- webpack.prod.conf.js         // webpack生产环境配置</span><br><span class="line">|-- config                           // 项目开发环境配置</span><br><span class="line">|   |-- dev.env.js                   // 开发环境变量</span><br><span class="line">|   |-- index.js                     // 项目一些配置变量</span><br><span class="line">|   |-- prod.env.js                  // 生产环境变量</span><br><span class="line">|   |-- test.env.js                  // 测试环境变量</span><br><span class="line">|-- src                              // 源码目录</span><br><span class="line">|   |--assets                        // 静态文件，比如一些图片，json数据等</span><br><span class="line">|   |-- components                   // vue公共组件</span><br><span class="line">|   |-- store                        // vuex的状态管理</span><br><span class="line">|   |-- App.vue                      // 页面入口文件</span><br><span class="line">|   |-- main.js                      // 程序入口文件，加载各种公共组件</span><br><span class="line">|-- static                           </span><br><span class="line">|   |-- data                         // 群聊分析得到的数据用于数据可视化</span><br><span class="line">|-- .babelrc                         // ES6语法编译配置</span><br><span class="line">|-- .editorconfig                    // 定义代码格式</span><br><span class="line">|-- .gitignore                       // git上传需要忽略的文件格式</span><br><span class="line">|-- README.md                        // 项目说明</span><br><span class="line">|-- favicon.ico </span><br><span class="line">|-- index.html                       // 入口页面</span><br><span class="line">|-- package.json                     // 项目基本信息</span><br></pre></td></tr></table></figure>
+<p>在项目组，会遇到一些<code>npm run build</code>的问题，通常发生在打包后请求js文件，css文件，图片资源等等路径的问题。</p>
+<ol>
+<li>请求js、css文件404，由于打包时候指定的路径不对，在config/index.js文件中，可以修改assetsPublicPath的值为 ‘./‘，即相对路径，在打包完的结构中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|-- dist                            // 打包完成后的文件夹</span><br><span class="line">|   |-- index.html                  // 首页默认index.html</span><br><span class="line">|   |-- static                      // js、css、img文件</span><br><span class="line">|--       |-- css</span><br><span class="line">|--       |-- js</span><br><span class="line">|--       |-- img</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>index.html中的link和script脚本即可正常获取到同级的static文件夹下的文件。（配置中默认是 ‘/‘，即根目录，巨鸡儿坑）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">build: &#123;</span><br><span class="line">    <span class="comment">// Template for index.html</span></span><br><span class="line">    index: path.resolve(__dirname, <span class="string">'../dist/index.html'</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Paths</span></span><br><span class="line">    assetsRoot: path.resolve(__dirname, <span class="string">'../dist'</span>),</span><br><span class="line">    assetsSubDirectory: <span class="string">'static'</span>,</span><br><span class="line">    assetsPublicPath: <span class="string">'./'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Source Maps</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    productionSourceMap: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// https://webpack.js.org/configuration/devtool/#production</span></span><br><span class="line">    devtool: <span class="string">'#source-map'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Gzip off by default as many popular static hosts such as</span></span><br><span class="line">    <span class="comment">// Surge or Netlify already gzip all static assets for you.</span></span><br><span class="line">    <span class="comment">// Before setting to `true`, make sure to:</span></span><br><span class="line">    <span class="comment">// npm install --save-dev compression-webpack-plugin</span></span><br><span class="line">    productionGzip: <span class="literal">false</span>,</span><br><span class="line">    productionGzipExtensions: [<span class="string">'js'</span>, <span class="string">'css'</span>],</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Run the build command with an extra argument to</span></span><br><span class="line">    <span class="comment">// View the bundle analyzer report after build finishes:</span></span><br><span class="line">    <span class="comment">// `npm run build --report`</span></span><br><span class="line">    <span class="comment">// Set to `true` or `false` to always turn it on or off</span></span><br><span class="line">    bundleAnalyzerReport: process.env.npm_config_report</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>解决完这个之后，只是解决了js、css文件引入的问题。我在css中一个class里添加了一个background属性，值为一个url。打包完之后，在获取时，真实的请求路径为</li>
+</ol>
+<p><img src="http://47.94.106.10/URL.png" alt="image"></p>
+<p>，只有后半部分的/static/img/cat.caa02bc.jpg才是我们需要的。此时需要在build/utils.js里面修改<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Extract CSS when that option is specified</span></span><br><span class="line">    <span class="comment">// (which is the case during production build)</span></span><br><span class="line">    <span class="keyword">if</span> (options.extract) &#123;</span><br><span class="line">      <span class="keyword">return</span> ExtractTextPlugin.extract(&#123;</span><br><span class="line">        use: loaders,</span><br><span class="line">        publicPath:<span class="string">'../../'</span>,</span><br><span class="line">        fallback: <span class="string">'vue-style-loader'</span></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> [<span class="string">'vue-style-loader'</span>].concat(loaders)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>指定了publicpath之后，就可以顺利取到我们写好的相对路径URL的图片。<br>3.在写底部footer组件的时候，其中的图片我是用一个循环v-for来写（虽然根本不需要）。循环的结构是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;blog-footer&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;icons&quot;&gt;</span><br><span class="line">        &lt;template v-for=&quot;(item,index) in icons&quot;&gt;</span><br><span class="line">            &lt;a target=&quot;_blank&quot; :key=&quot;index&quot; :href=&quot;item.url&quot;&gt;&lt;img  :src=&quot;item.picUrl&quot; :title=&quot;item.alt&quot; :alt=&quot;item.alt&quot;&gt;&lt;/a&gt;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;intro&quot;&gt;这里是一句撞壁的话&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      icons: [</span><br><span class="line">        &#123;// eslint-disable-next-line</span><br><span class="line">         // picUrl: require(&quot;../../assets/GitHub.svg&quot;),</span><br><span class="line">          picUrl: &quot;../../assets/GitHub.svg&quot;,</span><br><span class="line">          url: &quot;https://github.com/twodogwang&quot;,</span><br><span class="line">          alt: &quot;GayHub&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;// eslint-disable-next-line</span><br><span class="line">         // picUrl: require(&quot;../../assets/weibo.svg&quot;),</span><br><span class="line">          picUrl: &quot;../../assets/weibo.svg&quot;,</span><br><span class="line">          url: &quot;&quot;,</span><br><span class="line">          alt: &quot;Weibo&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>起初是想循环一个很简单的a标签内嵌一个img标签，img标签的src是通过循环的数组中获取，起初的写法如上，url是个字符串。但是这样在渲染完成之后，渲染在html结构中的img标签的src就是picUrl属性的值，而直接写在html结构中是一个base64格式的图片。写成注释中的require写法，应该是可以直接通过loader转换为base64格式了。有待研究。</p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/23/post/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/23/post/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/23/post/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2018-01-22T13:41:10.000Z"><a href="/2018/01/22/post/">Mon, Jan 22 2018, 9:41:10 pm</a></time>
 
   
