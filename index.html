@@ -103,6 +103,72 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2018-01-24T13:09:50.000Z"><a href="/2018/01/24/post/">Wed, Jan 24 2018, 9:09:50 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/24/post/">Vue中父组件调用子组件的方法</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue-父子组件/">Vue,父子组件</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <ol>
+<li>这几天在网上的博客搜索父组件调用子组件的方法，基本上就是用ref。即在父组件文件中在子组件上定义ref属性，即可通过<code>this.$refs.xxx</code>取到这个节点。然后可以直接调用方法了。</li>
+<li>另外，如果不怕麻烦的话，可以用eventbus。eventbus类似于一个中间人的角色，在一个js文件中，new一个Vue的实例，引入你需要进行信息方法传递的文件中，在引入的实例上触发和接收时间，即可完成方法的调用。不止在父子组件中，更常用的地方则是兄弟组件之间。</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/24/post/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/24/post/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/24/post/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2018-01-23T12:08:58.000Z"><a href="/2018/01/23/post/">Tue, Jan 23 2018, 8:08:58 pm</a></time>
 
   
