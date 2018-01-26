@@ -103,6 +103,72 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2018-01-26T15:32:53.000Z"><a href="/2018/01/26/post/">Fri, Jan 26 2018, 11:32:53 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/26/post/">Vue的v-if问题和组件中props和data的问题</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue、生命周期、钩子函数、子组件父组件/">Vue、生命周期、钩子函数、子组件父组件</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h1 id="今天在修改项目的时候有个问题"><a href="#今天在修改项目的时候有个问题" class="headerlink" title="今天在修改项目的时候有个问题"></a>今天在修改项目的时候有个问题</h1><ol>
+<li>之前在做功能的时候，通过ref取到子组件，然后通过<code>this.$refs.zizujian[0].method()</code>可以调用子组件上的方法，然后进行操作。但是今天发现之前以为修改子组件的<code>taglist</code>成功了，其实没有。子组件的<code>taglist=[].concat(this.value)</code>，这个<code>this.value</code>是通过<code>prop</code>选项传进来的，也就是说，其实个人认为是props先传入然后再形成data选项。而且，如果在data中定义的量根据<code>props</code>中的值形成的话，是没有实时更新的效果的，也就是说，除了认为修改data里的值，根据props传入的值形成的这个值是不会改变的，即使传入的值发生了变化。如果需要实时更新的话，可以通过computed选项来构建这个量，不过这样再手动修改这个值的话就会很麻烦。watch应该也可以。</li>
+<li>那为什么在之前调用子组件修改taglist失败的情况下仍然可以达到效果呢？后来研究发现是v-if的问题。v-if和v-show的最大的区别就是，v-show其实是渲染在dom里面的，只是修改了他的display属性，而v-if如果为false的话，dom中不会有这个dom结构。我在展示和隐藏子组件的时候使用了v-if，也就是说每次隐藏和显示其实都是在修改dom结构，重新生成这个实例，生命周期都会走一边，钩子函数也会重新调用（通过setInterval定时器验证过）。那么每次在重新生成实例的时候，里面的taglist都会重新根据传入的value生成，自然也就会恢复到一开始的状态，达到取消的效果。</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/26/post/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/26/post/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/26/post/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2018-01-24T13:09:50.000Z"><a href="/2018/01/24/post/">Wed, Jan 24 2018, 9:09:50 pm</a></time>
 
   
