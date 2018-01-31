@@ -86,6 +86,74 @@
 </div>
 
 
+  <article class="[post]">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+      <time datetime="2018-01-15T13:23:00.000Z"><a href="/2018/01/15/demo/">Mon, Jan 15 2018, 9:23:00 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/15/demo/">vue-router和router-view标签的关系</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/Vue-Vue-router/">Vue,Vue-router</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <!-- ## vue-router中children和router-view标签的关系 -->
+<h3 id="children层数对应router-view的层级关系"><a href="#children层数对应router-view的层级关系" class="headerlink" title="children层数对应router-view的层级关系"></a>children层数对应router-view的层级关系</h3><blockquote>
+<p><router-view> 组件是一个 functional 组件，渲染路径匹配到的视图组件。<code>&lt;router-view&gt;</code> 渲染的组件还可以内嵌自己的 <code>&lt;router-view&gt;</code>，根据嵌套路径，渲染嵌套组件。</router-view></p>
+</blockquote>
+<p>目前理解的是对应一个children层级的路由，如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import father from &apos;./father&apos;;</span><br><span class="line">import son from &apos;./son&apos;;</span><br><span class="line"></span><br><span class="line">router = &#123;</span><br><span class="line">    path: &apos;/father&apos;,</span><br><span class="line">    component: father,</span><br><span class="line">    children: [&#123;</span><br><span class="line">        path: &apos;son&apos;,</span><br><span class="line">        component: son</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果需要渲染出/father/son层级对应的组件，需要有同样嵌套层级的<router-view>，在第一层<router-view>中渲染father组件，在下一层<router-view>中渲染出son组件。所以需要嵌套的<router-view>标签来渲染出对应嵌套的route对象。</router-view></router-view></router-view></router-view></p>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/15/demo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/15/demo/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/15/demo/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article class="post">
   
     <div class="gallery">

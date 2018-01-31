@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>update相关钩子 | 夏娜酱的菠萝包</title>
+  <title>js的执行和event loop | 夏娜酱的菠萝包</title>
   <meta name="author" content="cqyxy">
   
   <meta name="description" content="F.E.D">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="update相关钩子"/>
+  <meta property="og:title" content="js的执行和event loop"/>
   <meta property="og:site_name" content="夏娜酱的菠萝包"/>
 
   
@@ -71,10 +71,10 @@
   <div class="post-content">
     <header>
       
-      <time datetime="2018-01-29T13:31:45.000Z"><a href="/2018/01/29/post/">Mon, Jan 29 2018, 9:31:45 pm</a></time>
+      <time datetime="2018-01-31T15:52:21.000Z"><a href="/2018/01/31/post/">Wed, Jan 31 2018, 11:52:21 pm</a></time>
 
   
-    <h1 class="title">update相关钩子</h1>
+    <h1 class="title">js的执行和event loop</h1>
   
 
 
@@ -82,7 +82,7 @@
   
   <div class="tags">
   	<i class="fa fa-tag"></i>
-    <a href="/tags/vue-router/">vue-router</a>
+    <a href="/tags/js-nodejs-eventloop-microtask-macrotask/">js,nodejs,eventloop,microtask,macrotask</a>
   </div>
 
 <div class="clear"></div>
@@ -90,17 +90,13 @@
     </header>
     <div class="entry">
       
-        <h2 id="第一次用关于update的钩子"><a href="#第一次用关于update的钩子" class="headerlink" title="第一次用关于update的钩子"></a>第一次用关于update的钩子</h2><hr>
-<p>updated</p>
-<blockquote>
-<p>由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。<br>当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。然而在大多数情况下，你应该避免在此期间更改状态。如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之。<br>注意 updated 不会承诺所有的子组件也都一起被重绘。如果你希望等到整个视图都重绘完毕，可以用 vm.$nextTick 替换掉 updated：</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">updated: function () &#123;</span><br><span class="line">  this.$nextTick(function () &#123;</span><br><span class="line">    // Code that will run only after the</span><br><span class="line">    // entire view has been re-rendered</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>beforeUpdate</p>
-<blockquote>
-<p>据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。<br>你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。</p>
-</blockquote>
-<p>今天在调用beforeUpdate钩子函数时，进行了请求，得到response后进行了数据的赋值，结果进入一个循环，不停地在update的过程中，不停地触发这个钩子函数。后来查了查vue-router的api，其中的导航守卫应该可以使用。由于参数或查询的改变并不会触发进入/离开的导航守卫，所以不考虑进入（router.beforeEach）和离开（router.afterEach）两个全局钩子，可以使用定义在组件内的守卫beforeRouteUpdate，该方法接受三个参数，to,from,next。to为将要进入的目标路由对象（也就是组件内的$route，内有path，params等等属性），from为将要离开的路由，而next为一个方法，一定要调用该方法resolve掉这个钩子函数。具体next的参数可以参照<a href="https://router.vuejs.org/zh-cn/advanced/navigation-guards.html" target="_blank" rel="noopener">官方文档</a>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    // 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，</span><br><span class="line">    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    // 可以访问组件实例 `this`</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下"><a href="#今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下" class="headerlink" title="今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下"></a>今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下</h2><ol>
+<li>因为考虑到线程进程的概念，于是上网查询了一下。<a href="https://www.cnblogs.com/dudeyouth/p/6698274.html" target="_blank" rel="noopener">node是单线程的。</a>IO操作是阻塞的，node的非阻塞IO其实是异步IO，通过事件驱动，交由别人来处理IO，等处理完了，再把IO结果加入队列中。所以异步IO的优势在于，可以处理高密集型IO操作，数据库读取，http请求等。所以node适合做web服务端的程序。</li>
+<li>考虑到多个请求同时进行，在一个node程序中进行实践模拟。在同步的地方进行了一个大数值的循环，此时通过postman进行两次请求。果然第一次的请求阻塞中，没有返回，第二个请求甚至连阻塞之前的console都没打印。</li>
+<li>然后，将大数值的循环放入await中。由于await类似于同步，直接阻塞，所以和第一次一样，都阻塞了。</li>
+<li>第三次，将await去掉，只保留promise。将大循环放入promise的then中。此时第一次请求进行，一秒钟不到得到了返回，并且在返回后，控制台输出了循环结束后面的一个console。但是并不是如此简单，如果第一次在then中，then指定的回调没有处理完，第二次的请求也没有了反应，和前两次一样，可见还是阻塞住了。</li>
+<li>随后又去看了promise的实现原理，个人感觉和一般的异步不一样，事实证明果然如此，从event loop又扯到了task queue，又扯到了组成部分<a href="http://blog.csdn.net/sjn0503/article/details/76087631" target="_blank" rel="noopener">macrotask和microtask。</a>未完待续…</li>
+</ol>
 
       
     </div>
@@ -125,10 +121,8 @@
           <div class="clearfix"></div>
           <nav id="pagination">
   
-    <a href="/2018/01/31/post/" class="alignleft prev"><i class="fa fa-long-arrow-left"></i>Next</a>
   
-  
-    <a href="/2018/01/26/post/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
+    <a href="/2018/01/29/post/" class="alignright next">Prev<i class="fa fa-long-arrow-right"></i></a>
   
   <div class="clearfix"></div>
 </nav>
@@ -144,7 +138,7 @@
 
   
       <!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread" data-thread-key="/2018/01/29/post/"></div>
+<div class="ds-thread" data-thread-key="/2018/01/31/post/"></div>
 <!-- Duoshuo Comment END -->
   
 </section>

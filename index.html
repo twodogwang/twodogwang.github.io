@@ -103,6 +103,75 @@
   <div class="post-content">
     <header>
       
+      <time datetime="2018-01-31T15:52:21.000Z"><a href="/2018/01/31/post/">Wed, Jan 31 2018, 11:52:21 pm</a></time>
+
+  
+    <h1 class="title"><a href="/2018/01/31/post/">js的执行和event loop</a></h1>
+  
+
+
+
+  
+  <div class="tags">
+  	<i class="fa fa-tag"></i>
+    <a href="/tags/js-nodejs-eventloop-microtask-macrotask/">js,nodejs,eventloop,microtask,macrotask</a>
+  </div>
+
+<div class="clear"></div>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下"><a href="#今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下" class="headerlink" title="今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下"></a>今天无聊，想到如果多个请求同时发出，node会如何工作。于是测试了一下</h2><ol>
+<li>因为考虑到线程进程的概念，于是上网查询了一下。<a href="https://www.cnblogs.com/dudeyouth/p/6698274.html" target="_blank" rel="noopener">node是单线程的。</a>IO操作是阻塞的，node的非阻塞IO其实是异步IO，通过事件驱动，交由别人来处理IO，等处理完了，再把IO结果加入队列中。所以异步IO的优势在于，可以处理高密集型IO操作，数据库读取，http请求等。所以node适合做web服务端的程序。</li>
+<li>考虑到多个请求同时进行，在一个node程序中进行实践模拟。在同步的地方进行了一个大数值的循环，此时通过postman进行两次请求。果然第一次的请求阻塞中，没有返回，第二个请求甚至连阻塞之前的console都没打印。</li>
+<li>然后，将大数值的循环放入await中。由于await类似于同步，直接阻塞，所以和第一次一样，都阻塞了。</li>
+<li>第三次，将await去掉，只保留promise。将大循环放入promise的then中。此时第一次请求进行，一秒钟不到得到了返回，并且在返回后，控制台输出了循环结束后面的一个console。但是并不是如此简单，如果第一次在then中，then指定的回调没有处理完，第二次的请求也没有了反应，和前两次一样，可见还是阻塞住了。</li>
+<li>随后又去看了promise的实现原理，个人感觉和一般的异步不一样，事实证明果然如此，从event loop又扯到了task queue，又扯到了组成部分<a href="http://blog.csdn.net/sjn0503/article/details/76087631" target="_blank" rel="noopener">macrotask和microtask。</a>未完待续…</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        <div class="alignleft">
+            <a href="/2018/01/31/post/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
+        </div>
+        
+        
+          <div class="alignright"> 
+            <a href="http://yoursite.com/2018/01/31/post/#comment" class="comment-link">
+              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/31/post/">&nbsp;
+              </span>
+            </a>
+          </div>
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
       <time datetime="2018-01-29T13:31:45.000Z"><a href="/2018/01/29/post/">Mon, Jan 29 2018, 9:31:45 pm</a></time>
 
   
@@ -715,74 +784,6 @@
           <div class="alignright"> 
             <a href="http://yoursite.com/2018/01/16/post/#comment" class="comment-link">
               <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/16/post/">&nbsp;
-              </span>
-            </a>
-          </div>
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="[post]">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-      <time datetime="2018-01-15T13:23:00.000Z"><a href="/2018/01/15/demo/">Mon, Jan 15 2018, 9:23:00 pm</a></time>
-
-  
-    <h1 class="title"><a href="/2018/01/15/demo/">vue-router和router-view标签的关系</a></h1>
-  
-
-
-
-  
-  <div class="tags">
-  	<i class="fa fa-tag"></i>
-    <a href="/tags/Vue-Vue-router/">Vue,Vue-router</a>
-  </div>
-
-<div class="clear"></div>
-      
-    </header>
-    <div class="entry">
-      
-        <!-- ## vue-router中children和router-view标签的关系 -->
-<h3 id="children层数对应router-view的层级关系"><a href="#children层数对应router-view的层级关系" class="headerlink" title="children层数对应router-view的层级关系"></a>children层数对应router-view的层级关系</h3><blockquote>
-<p><router-view> 组件是一个 functional 组件，渲染路径匹配到的视图组件。<code>&lt;router-view&gt;</code> 渲染的组件还可以内嵌自己的 <code>&lt;router-view&gt;</code>，根据嵌套路径，渲染嵌套组件。</router-view></p>
-</blockquote>
-<p>目前理解的是对应一个children层级的路由，如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import father from &apos;./father&apos;;</span><br><span class="line">import son from &apos;./son&apos;;</span><br><span class="line"></span><br><span class="line">router = &#123;</span><br><span class="line">    path: &apos;/father&apos;,</span><br><span class="line">    component: father,</span><br><span class="line">    children: [&#123;</span><br><span class="line">        path: &apos;son&apos;,</span><br><span class="line">        component: son</span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果需要渲染出/father/son层级对应的组件，需要有同样嵌套层级的<router-view>，在第一层<router-view>中渲染father组件，在下一层<router-view>中渲染出son组件。所以需要嵌套的<router-view>标签来渲染出对应嵌套的route对象。</router-view></router-view></router-view></router-view></p>
-
-      
-    </div>
-    <footer>
-      
-        <div class="alignleft">
-            <a href="/2018/01/15/demo/#more" class="more-link"><i class="fa fa-chevron-right"></i>Read More</a>
-        </div>
-        
-        
-          <div class="alignright"> 
-            <a href="http://yoursite.com/2018/01/15/demo/#comment" class="comment-link">
-              <i class="fa fa-comments"></i><span class="ds-thread-count" data-thread-key="/2018/01/15/demo/">&nbsp;
               </span>
             </a>
           </div>
